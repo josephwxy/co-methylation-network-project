@@ -1,0 +1,509 @@
+---
+title: "ProjectWorkflow"
+output: html_document
+---
+
+# 1. 
+
+Download the hg19 m6a base table from RMBase website
+
+```{bash, eval = FALSE}
+wget http://mirlab.sysu.edu.cn/rmbase/download/human/RMBase_hg19_all_m6A_site.txt
+```
+
+and Modified the original table - remove the top lines and # symbol
+
+& server setting
+
+```{bash, eval = FALSE}
+ssh jia.meng@cheetah.cbi.utsa.edu #pw: 2104587916
+
+qlogin
+
+mkdir /home/jia.meng/Xiangyu/SH
+mkdir /home/jia.meng/Xiangyu/rpkm
+
+rm /home/jia.meng/Xiangyu/SH/*
+rm /home/jia.meng/Xiangyu/rpkm/*
+
+# Newest version R
+/home
+```
+
+# 2. 
+
+Write a script to output the GRange tables with m6A site file for storing the necessary information
+
+```{r, eval = FALSE}
+library(GenomicRanges)
+makegranges = function(df){
+  chr <- df$chromosome
+  modstart = df$modStart
+  modId = df$modId
+  strand = df$strand
+  supnum = df$supportNum
+  gr  = GRanges(seqnames = chr, IRanges(start = modstart, width = 2), strand = strand)
+  gr
+}
+```
+
+# 3. 
+
+Import the m6a sites information into each table
+
+```{r, eval = FALSE}
+library(readr)
+allsites<-read_tsv("/home/xiangyu/Desktop/Co-methylation Network Project/RMBase_hg19_all_m6A_site.txt")
+as.data.frame(allsites)
+table(allsites$chromosome)
+chr1sitespos <- allsites[which(allsites$chromosome == "chr1" & allsites$strand == "+"),]
+chr1sitespos <- makegranges(df = chr1sitespos)
+chr1sitesnag <- allsites[which(allsites$chromosome == "chr1" & allsites$strand == "-"),]
+chr1sitesnag <- makegranges(df = chr1sitesnag)
+chr2sitespos <- allsites[which(allsites$chromosome == "chr2" & allsites$strand == "+"),]
+chr2sitespos <- makegranges(df = chr2sitespos)
+chr2sitesnag <- allsites[which(allsites$chromosome == "chr2" & allsites$strand == "-"),]
+chr2sitesnag <- makegranges(df = chr2sitesnag)
+chr3sitespos <- allsites[which(allsites$chromosome == "chr3" & allsites$strand == "+"),]
+chr3sitespos <- makegranges(df = chr3sitespos)
+chr3sitesnag <- allsites[which(allsites$chromosome == "chr3" & allsites$strand == "-"),]
+chr3sitesnag <- makegranges(df = chr3sitesnag)
+chr4sitespos <- allsites[which(allsites$chromosome == "chr4" & allsites$strand == "+"),]
+chr4sitespos <- makegranges(df = chr4sitespos)
+chr4sitesnag <- allsites[which(allsites$chromosome == "chr4" & allsites$strand == "-"),]
+chr4sitesnag <- makegranges(df = chr4sitesnag)
+chr5sitespos <- allsites[which(allsites$chromosome == "chr5" & allsites$strand == "+"),]
+chr5sitespos <- makegranges(df = chr5sitespos)
+chr5sitesnag <- allsites[which(allsites$chromosome == "chr5" & allsites$strand == "-"),]
+chr5sitesnag <- makegranges(df = chr5sitesnag)
+chr6sitespos <- allsites[which(allsites$chromosome == "chr6" & allsites$strand == "+"),]
+chr6sitespos <- makegranges(df = chr6sitespos)
+chr6sitesnag <- allsites[which(allsites$chromosome == "chr6" & allsites$strand == "-"),]
+chr6sitesnag <- makegranges(df = chr6sitesnag)
+chr7sitespos <- allsites[which(allsites$chromosome == "chr7" & allsites$strand == "+"),]
+chr7sitespos <- makegranges(df = chr7sitespos)
+chr7sitesnag <- allsites[which(allsites$chromosome == "chr7" & allsites$strand == "-"),]
+chr7sitesnag <- makegranges(df = chr7sitesnag)
+chr8sitespos <- allsites[which(allsites$chromosome == "chr8" & allsites$strand == "+"),]
+chr8sitespos <- makegranges(df = chr8sitespos)
+chr8sitesnag <- allsites[which(allsites$chromosome == "chr8" & allsites$strand == "-"),]
+chr8sitesnag <- makegranges(df = chr8sitesnag)
+chr9sitespos <- allsites[which(allsites$chromosome == "chr9" & allsites$strand == "+"),]
+chr9sitespos <- makegranges(df = chr9sitespos)
+chr9sitesnag <- allsites[which(allsites$chromosome == "chr9" & allsites$strand == "-"),]
+chr9sitesnag <- makegranges(df = chr9sitesnag)
+chr10sitespos <- allsites[which(allsites$chromosome == "chr10" & allsites$strand == "+"),]
+chr10sitespos <- makegranges(df = chr10sitespos)
+chr10sitesnag <- allsites[which(allsites$chromosome == "chr10" & allsites$strand == "-"),]
+chr10sitesnag <- makegranges(df = chr10sitesnag)
+chr11sitespos <- allsites[which(allsites$chromosome == "chr11" & allsites$strand == "+"),]
+chr11sitespos <- makegranges(df = chr11sitespos)
+chr11sitesnag <- allsites[which(allsites$chromosome == "chr11" & allsites$strand == "-"),]
+chr11sitesnag <- makegranges(df = chr11sitesnag)
+chr12sitespos <- allsites[which(allsites$chromosome == "chr12" & allsites$strand == "+"),]
+chr12sitespos <- makegranges(df = chr12sitespos)
+chr12sitesnag <- allsites[which(allsites$chromosome == "chr12" & allsites$strand == "-"),]
+chr12sitesnag <- makegranges(df = chr12sitesnag)
+chr13sitespos <- allsites[which(allsites$chromosome == "chr13" & allsites$strand == "+"),]
+chr13sitespos <- makegranges(df = chr13sitespos)
+chr13sitesnag <- allsites[which(allsites$chromosome == "chr13" & allsites$strand == "-"),]
+chr13sitesnag <- makegranges(df = chr13sitesnag)
+chr14sitespos <- allsites[which(allsites$chromosome == "chr14" & allsites$strand == "+"),]
+chr14sitespos <- makegranges(df = chr14sitespos)
+chr14sitesnag <- allsites[which(allsites$chromosome == "chr14" & allsites$strand == "-"),]
+chr14sitesnag <- makegranges(df = chr14sitesnag)
+chr15sitespos <- allsites[which(allsites$chromosome == "chr15" & allsites$strand == "+"),]
+chr15sitespos <- makegranges(df = chr15sitespos)
+chr15sitesnag <- allsites[which(allsites$chromosome == "chr15" & allsites$strand == "-"),]
+chr15sitesnag <- makegranges(df = chr15sitesnag)
+chr16sitespos <- allsites[which(allsites$chromosome == "chr16" & allsites$strand == "+"),]
+chr16sitespos <- makegranges(df = chr16sitespos)
+chr16sitesnag <- allsites[which(allsites$chromosome == "chr16" & allsites$strand == "-"),]
+chr16sitesnag <- makegranges(df = chr16sitesnag)
+chr17sitespos <- allsites[which(allsites$chromosome == "chr17" & allsites$strand == "+"),]
+chr17sitespos <- makegranges(df = chr17sitespos)
+chr17sitesnag <- allsites[which(allsites$chromosome == "chr17" & allsites$strand == "-"),]
+chr17sitesnag <- makegranges(df = chr17sitesnag)
+chr18sitespos <- allsites[which(allsites$chromosome == "chr18" & allsites$strand == "+"),]
+chr18sitespos <- makegranges(df = chr18sitespos)
+chr18sitesnag <- allsites[which(allsites$chromosome == "chr18" & allsites$strand == "-"),]
+chr18sitesnag <- makegranges(df = chr18sitesnag)
+chr19sitespos <- allsites[which(allsites$chromosome == "chr19" & allsites$strand == "+"),]
+chr19sitespos <- makegranges(df = chr19sitespos)
+chr19sitesnag <- allsites[which(allsites$chromosome == "chr19" & allsites$strand == "-"),]
+chr19sitesnag <- makegranges(df = chr19sitesnag)
+chr20sitespos <- allsites[which(allsites$chromosome == "chr20" & allsites$strand == "+"),]
+chr20sitespos <- makegranges(df = chr20sitespos)
+chr20sitesnag <- allsites[which(allsites$chromosome == "chr20" & allsites$strand == "-"),]
+chr20sitesnag <- makegranges(df = chr20sitesnag)
+chr21sitespos <- allsites[which(allsites$chromosome == "chr21" & allsites$strand == "+"),]
+chr21sitespos <- makegranges(df = chr21sitespos)
+chr21sitesnag <- allsites[which(allsites$chromosome == "chr21" & allsites$strand == "-"),]
+chr21sitesnag <- makegranges(df = chr21sitesnag)
+chr22sitespos <- allsites[which(allsites$chromosome == "chr22" & allsites$strand == "+"),]
+chr22sitespos <- makegranges(df = chr22sitespos)
+chr22sitesnag <- allsites[which(allsites$chromosome == "chr22" & allsites$strand == "-"),]
+chr22sitesnag <- makegranges(df = chr22sitesnag)
+chrMsitespos <- allsites[which(allsites$chromosome == "chrM" & allsites$strand == "+"),]
+chrMsitespos <- makegranges(df = chrMsitespos)
+chrMsitesnag <- allsites[which(allsites$chromosome == "chrM" & allsites$strand == "-"),]
+chrMsitesnag <- makegranges(df = chrMsitesnag)
+chrXsitespos <- allsites[which(allsites$chromosome == "chrX" & allsites$strand == "+"),]
+chrXsitespos <- makegranges(df = chrXsitespos)
+chrXsitesnag <- allsites[which(allsites$chromosome == "chrX" & allsites$strand == "-"),]
+chrXsitesnag <- makegranges(df = chrXsitesnag)
+chrYsitespos <- allsites[which(allsites$chromosome == "chrY" & allsites$strand == "+"),]
+chrYsitespos <- makegranges(df = chrYsitespos)
+chrYsitesnag <- allsites[which(allsites$chromosome == "chrY" & allsites$strand == "-"),]
+chrYsitesnag <- makegranges(df = chrYsitesnag)
+```
+
+# 4. 
+
+Create the bins of all the methylation sites
+
+```{r, eval = FALSE}
+binchr1pos <- resize(chr1sitespos, 200, fix = "center")
+binchr1nag <- resize(chr1sitesnag, 200, fix = "center")
+binchr2pos <- resize(chr2sitespos, 200, fix = "center")
+binchr2nag <- resize(chr2sitesnag, 200, fix = "center")
+binchr3pos <- resize(chr3sitespos, 200, fix = "center")
+binchr3nag <- resize(chr3sitesnag, 200, fix = "center")
+binchr4pos <- resize(chr4sitespos, 200, fix = "center")
+binchr4nag <- resize(chr4sitesnag, 200, fix = "center")
+binchr5pos <- resize(chr5sitespos, 200, fix = "center")
+binchr5nag <- resize(chr5sitesnag, 200, fix = "center")
+binchr6pos <- resize(chr6sitespos, 200, fix = "center")
+binchr6nag <- resize(chr6sitesnag, 200, fix = "center")
+binchr7pos <- resize(chr7sitespos, 200, fix = "center")
+binchr7nag <- resize(chr7sitesnag, 200, fix = "center")
+binchr8pos <- resize(chr8sitespos, 200, fix = "center")
+binchr8nag <- resize(chr8sitesnag, 200, fix = "center")
+binchr9pos <- resize(chr9sitespos, 200, fix = "center")
+binchr9nag <- resize(chr9sitesnag, 200, fix = "center")
+binchr10pos <- resize(chr10sitespos, 200, fix = "center")
+binchr10nag <- resize(chr10sitesnag, 200, fix = "center")
+binchr11pos <- resize(chr11sitespos, 200, fix = "center")
+binchr11nag <- resize(chr11sitesnag, 200, fix = "center")
+binchr12pos <- resize(chr12sitespos, 200, fix = "center")
+binchr12nag <- resize(chr12sitesnag, 200, fix = "center")
+binchr13pos <- resize(chr13sitespos, 200, fix = "center")
+binchr13nag <- resize(chr13sitesnag, 200, fix = "center")
+binchr14pos <- resize(chr14sitespos, 200, fix = "center")
+binchr14nag <- resize(chr14sitesnag, 200, fix = "center")
+binchr15pos <- resize(chr15sitespos, 200, fix = "center")
+binchr15nag <- resize(chr15sitesnag, 200, fix = "center")
+binchr16pos <- resize(chr16sitespos, 200, fix = "center")
+binchr16nag <- resize(chr16sitesnag, 200, fix = "center")
+binchr17pos <- resize(chr17sitespos, 200, fix = "center")
+binchr17nag <- resize(chr17sitesnag, 200, fix = "center")
+binchr18pos <- resize(chr18sitespos, 200, fix = "center")
+binchr18nag <- resize(chr18sitesnag, 200, fix = "center")
+binchr19pos <- resize(chr19sitespos, 200, fix = "center")
+binchr19nag <- resize(chr19sitesnag, 200, fix = "center")
+binchr20pos <- resize(chr20sitespos, 200, fix = "center")
+binchr20nag <- resize(chr20sitesnag, 200, fix = "center")
+binchr21pos <- resize(chr21sitespos, 200, fix = "center")
+binchr21nag <- resize(chr21sitesnag, 200, fix = "center")
+binchr22pos <- resize(chr22sitespos, 200, fix = "center")
+binchr22nag <- resize(chr22sitesnag, 200, fix = "center")
+binchrMpos <- resize(chrMsitespos, 200, fix = "center")
+binchrMnag <- resize(chrMsitesnag, 200, fix = "center")
+binchrXpos <- resize(chrXsitespos, 200, fix = "center")
+binchrXnag <- resize(chrXsitesnag, 200, fix = "center")
+binchrYpos <- resize(chrYsitespos, 200, fix = "center")
+binchrYnag <- resize(chrYsitesnag, 200, fix = "center")
+
+bin <- c(binchr1pos, binchr1nag, binchr2pos, binchr2nag, binchr3pos, binchr3nag, binchr4pos, 
+         binchr4nag, binchr5pos, binchr5nag, binchr6pos, binchr6nag, binchr7pos, binchr7nag, 
+         binchr8pos, binchr8nag, binchr9pos, binchr9nag, binchr10pos, binchr10nag, binchr11pos, 
+         binchr11nag, binchr12pos, binchr12nag, binchr13pos, binchr13nag, binchr14pos, binchr14nag, 
+         binchr15pos, binchr15nag, binchr16pos, binchr16nag, binchr17pos, binchr17nag, binchr18pos, 
+         binchr18nag, binchr19pos, binchr19nag, binchr20pos, binchr20nag, binchr21pos, binchr21nag, 
+         binchr22pos, binchr22nag, binchrMpos, binchrMnag, binchrXpos, binchrXnag, binchrYpos, binchrYnag)
+
+write_rds(bin, "bin.rds")
+```
+
+# 4.1.test
+
+Test: upload the "bin.rds" on the server, and calculate RPKM on it.
+
+library(readr)
+bin <- read_rds("bin.rds")
+bin
+library(GenomicAlignments)
+aln <- readGAlignments("p001_HEK293T_S1_SYSY_ip_accept_hits.bam")
+rpkm <- countOverlaps(bin, aln)/((200/10^3)*(length(aln)/10^6))
+ 
+# 5. 
+
+Generate .sh files for each bam files in the directory on bash server (qlogin ahead).
+
+```{r, eval = FALSE}
+BAM_names <- list.files("/scratch/lhcumt/work/metdb2/align_visualize_expr/Homo_sapiens/human_hg19/")
+sh_grt <- function(BAM_name,idx)
+{
+srp_head = "#!/home/jia.meng/Zhen/R/bin/Rscript" # Use the newest version of R in Zhen's folder
+cmd = c(
+"library(GenomicAlignments)",
+"library(readr)",
+"setwd('/scratch/lhcumt/work/metdb2/align_visualize_expr/Homo_sapiens/human_hg19/')",
+"bin <- read_rds('/home/jia.meng/Xiangyu/bin.rds')",
+paste0("aln <- readGAlignments('",paste0(BAM_name,"/",BAM_name,"_accept_hits.bam"),"')"),
+"rpkm <- countOverlaps(bin, aln)/((200/10^3)*(length(aln)/10^6))",
+paste0("write_tsv(data.frame(",BAM_name," = rpkm),'/home/jia.meng/Xiangyu/rpkm/Rpkm_",idx,".txt')")
+)
+tab = rbind(srp_head,cbind(cmd))
+write(tab, file = paste0("/home/jia.meng/Xiangyu/SH/rpkm_",idx,'.sh'))
+cat(paste0(BAM_name," finished.\n"))
+}
+
+for (i in 1:length(BAM_names)){
+sh_grt(BAM_names[i],i)
+}
+```
+
+Here is one of the example of the sh format files generated by the script (rpkm_1.sh).
+
+```{r, eval = FALSE}
+#!/home/jia.meng/Zhen/R/bin/Rscript
+library(GenomicAlignments)
+library(readr)
+setwd('/scratch/lhcumt/work/metdb2/align_visualize_expr/Homo_sapiens/human_hg19/')
+bin <- read_rds('/home/jia.meng/Xiangyu/bin.rds')
+aln <- readGAlignments('p001_HEK293T_S1_SYSY_input/p001_HEK293T_S1_SYSY_input_accept_hits.bam')
+rpkm <- countOverlaps(bin, aln)/((200/10^3)*(length(aln)/10^6))
+write_tsv(data.frame(p001_HEK293T_S1_SYSY_input = rpkm),'/home/jia.meng/Xiangyu/rpkm/Rpkm_1.txt')
+```
+
+# 6. 
+
+to produce all the sh files include all the qsub commands
+
+```{r, eval = FALSE}
+qsub_vector <- function(ID,Output,Q_name,email)
+{
+sh_name = ID
+l <- length(sh_name)
+output = paste0(Output,1:l,".out")
+q_names = paste0(Q_name,1:l)
+command = vector(mode = "character",length = l)
+for(i in 1:l) {command[i] = paste0('echo "./',sh_name[i],'.sh" | qsub -cwd -m abe -M ',email,' -o ',output[i],' -N ',q_names[i])}
+command
+}
+
+srp_head = "#!/bin/bash"
+qsubs = qsub_vector(ID = paste0("rpkm_",1:length(BAM_names)),
+                    Output = "rpkm",
+                    Q_name = "Rpkm",
+                    email = "496691875@qq.com")
+cmd = c("cd /home/jia.meng/Xiangyu/SH/",
+        "chmod a+rwx *.sh",
+        qsubs)
+x = rbind(srp_head,cbind(cmd))
+write(x, file = "/home/jia.meng/Xiangyu/SH/qsubs.sh")
+```
+
+Content in qsubs.sh
+
+```{bash, eval = FALSE}
+#!/bin/bash
+cd /home/jia.meng/Xiangyu/SH/
+chmod a+rwx *.sh
+echo "./rpkm_1.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm1.out -N Rpkm1
+echo "./rpkm_2.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm2.out -N Rpkm2
+echo "./rpkm_3.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm3.out -N Rpkm3
+echo "./rpkm_4.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm4.out -N Rpkm4
+echo "./rpkm_5.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm5.out -N Rpkm5
+echo "./rpkm_6.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm6.out -N Rpkm6
+echo "./rpkm_7.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm7.out -N Rpkm7
+echo "./rpkm_8.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm8.out -N Rpkm8
+echo "./rpkm_9.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm9.out -N Rpkm9
+echo "./rpkm_10.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm10.out -N Rpkm10
+echo "./rpkm_11.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm11.out -N Rpkm11
+echo "./rpkm_12.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm12.out -N Rpkm12
+echo "./rpkm_13.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm13.out -N Rpkm13
+echo "./rpkm_14.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm14.out -N Rpkm14
+echo "./rpkm_15.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm15.out -N Rpkm15
+echo "./rpkm_16.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm16.out -N Rpkm16
+echo "./rpkm_17.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm17.out -N Rpkm17
+echo "./rpkm_18.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm18.out -N Rpkm18
+echo "./rpkm_19.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm19.out -N Rpkm19
+echo "./rpkm_20.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm20.out -N Rpkm20
+echo "./rpkm_21.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm21.out -N Rpkm21
+echo "./rpkm_22.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm22.out -N Rpkm22
+echo "./rpkm_23.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm23.out -N Rpkm23
+echo "./rpkm_24.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm24.out -N Rpkm24
+echo "./rpkm_25.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm25.out -N Rpkm25
+echo "./rpkm_26.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm26.out -N Rpkm26
+echo "./rpkm_27.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm27.out -N Rpkm27
+echo "./rpkm_28.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm28.out -N Rpkm28
+echo "./rpkm_29.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm29.out -N Rpkm29
+echo "./rpkm_30.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm30.out -N Rpkm30
+echo "./rpkm_31.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm31.out -N Rpkm31
+echo "./rpkm_32.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm32.out -N Rpkm32
+echo "./rpkm_33.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm33.out -N Rpkm33
+echo "./rpkm_34.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm34.out -N Rpkm34
+echo "./rpkm_35.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm35.out -N Rpkm35
+echo "./rpkm_36.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm36.out -N Rpkm36
+echo "./rpkm_37.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm37.out -N Rpkm37
+echo "./rpkm_38.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm38.out -N Rpkm38
+echo "./rpkm_39.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm39.out -N Rpkm39
+echo "./rpkm_40.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm40.out -N Rpkm40
+echo "./rpkm_41.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm41.out -N Rpkm41
+echo "./rpkm_42.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm42.out -N Rpkm42
+echo "./rpkm_43.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm43.out -N Rpkm43
+echo "./rpkm_44.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm44.out -N Rpkm44
+echo "./rpkm_45.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm45.out -N Rpkm45
+echo "./rpkm_46.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm46.out -N Rpkm46
+echo "./rpkm_47.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm47.out -N Rpkm47
+echo "./rpkm_48.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm48.out -N Rpkm48
+echo "./rpkm_49.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm49.out -N Rpkm49
+echo "./rpkm_50.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm50.out -N Rpkm50
+echo "./rpkm_51.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm51.out -N Rpkm51
+echo "./rpkm_52.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm52.out -N Rpkm52
+echo "./rpkm_53.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm53.out -N Rpkm53
+echo "./rpkm_54.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm54.out -N Rpkm54
+echo "./rpkm_55.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm55.out -N Rpkm55
+echo "./rpkm_56.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm56.out -N Rpkm56
+echo "./rpkm_57.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm57.out -N Rpkm57
+echo "./rpkm_58.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm58.out -N Rpkm58
+echo "./rpkm_59.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm59.out -N Rpkm59
+echo "./rpkm_60.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm60.out -N Rpkm60
+echo "./rpkm_61.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm61.out -N Rpkm61
+echo "./rpkm_62.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm62.out -N Rpkm62
+echo "./rpkm_63.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm63.out -N Rpkm63
+echo "./rpkm_64.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm64.out -N Rpkm64
+echo "./rpkm_65.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm65.out -N Rpkm65
+echo "./rpkm_66.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm66.out -N Rpkm66
+echo "./rpkm_67.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm67.out -N Rpkm67
+echo "./rpkm_68.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm68.out -N Rpkm68
+echo "./rpkm_69.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm69.out -N Rpkm69
+echo "./rpkm_70.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm70.out -N Rpkm70
+echo "./rpkm_71.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm71.out -N Rpkm71
+echo "./rpkm_72.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm72.out -N Rpkm72
+echo "./rpkm_73.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm73.out -N Rpkm73
+echo "./rpkm_74.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm74.out -N Rpkm74
+echo "./rpkm_75.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm75.out -N Rpkm75
+echo "./rpkm_76.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm76.out -N Rpkm76
+echo "./rpkm_77.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm77.out -N Rpkm77
+echo "./rpkm_78.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm78.out -N Rpkm78
+echo "./rpkm_79.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm79.out -N Rpkm79
+echo "./rpkm_80.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm80.out -N Rpkm80
+echo "./rpkm_81.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm81.out -N Rpkm81
+echo "./rpkm_82.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm82.out -N Rpkm82
+echo "./rpkm_83.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm83.out -N Rpkm83
+echo "./rpkm_84.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm84.out -N Rpkm84
+echo "./rpkm_85.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm85.out -N Rpkm85
+echo "./rpkm_86.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm86.out -N Rpkm86
+echo "./rpkm_87.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm87.out -N Rpkm87
+echo "./rpkm_88.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm88.out -N Rpkm88
+echo "./rpkm_89.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm89.out -N Rpkm89
+echo "./rpkm_90.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm90.out -N Rpkm90
+echo "./rpkm_91.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm91.out -N Rpkm91
+echo "./rpkm_92.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm92.out -N Rpkm92
+echo "./rpkm_93.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm93.out -N Rpkm93
+echo "./rpkm_94.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm94.out -N Rpkm94
+echo "./rpkm_95.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm95.out -N Rpkm95
+echo "./rpkm_96.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm96.out -N Rpkm96
+echo "./rpkm_97.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm97.out -N Rpkm97
+echo "./rpkm_98.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm98.out -N Rpkm98
+echo "./rpkm_99.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm99.out -N Rpkm99
+echo "./rpkm_100.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm100.out -N Rpkm100
+echo "./rpkm_101.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm101.out -N Rpkm101
+echo "./rpkm_102.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm102.out -N Rpkm102
+echo "./rpkm_103.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm103.out -N Rpkm103
+echo "./rpkm_104.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm104.out -N Rpkm104
+echo "./rpkm_105.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm105.out -N Rpkm105
+echo "./rpkm_106.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm106.out -N Rpkm106
+echo "./rpkm_107.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm107.out -N Rpkm107
+echo "./rpkm_108.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm108.out -N Rpkm108
+echo "./rpkm_109.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm109.out -N Rpkm109
+echo "./rpkm_110.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm110.out -N Rpkm110
+echo "./rpkm_111.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm111.out -N Rpkm111
+echo "./rpkm_112.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm112.out -N Rpkm112
+echo "./rpkm_113.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm113.out -N Rpkm113
+echo "./rpkm_114.sh" | qsub -cwd -m abe -M 496691875@qq.com -o rpkm114.out -N Rpkm114
+```
+
+Then submit them on server.
+
+```{bash, eval = FALSE}
+chmod a+rwx /home/jia.meng/Xiangyu/SH/qsubs.sh
+/home/jia.meng/Xiangyu/SH/qsubs.sh #Submit all
+```
+
+# 7. 
+
+When all the RPKM values are generated by the shell, the next step is to paste them together.
+
+```{r, eval = FALSE}
+library(readr)
+library(GenomicRanges)
+BAM_names <- list.files("/scratch/lhcumt/work/metdb2/align_visualize_expr/Homo_sapiens/human_hg19/")
+setwd('/home/jia.meng/Xiangyu/rpkm')
+bin <- read_rds("/home/jia.meng/Xiangyu/bin.rds")
+for(i in list.files()){
+df <- data.frame(read_tsv(i))
+df2 = mcols(bin)
+df2 = cbind(df,df2)
+mcols(bin) = df2
+}
+write_rds(bin,"/home/jia.meng/Xiangyu/rpkm/bin_rpkm.rds")
+```
+
+# 8. 
+
+Download the bin_rpkm.rds and calculate the M value.
+
+```{r}
+library(readr)
+binrpkm <- read_rds("/home/xiangyu/Desktop/Co-methylation Network Project/bin_rpkm.rds")
+
+rpkm <- mcols(binrpkm)
+rpkm <- as.data.frame(rpkm)
+rpkm_names <- colnames(rpkm)
+rpkm_input_names <- sort(grep("input",rpkm_names,value = TRUE))
+rpkm_IP_names <- sort(grep("ip",rpkm_names,value = TRUE))
+
+# To test whether the previous part of each sample name is same.
+identical(gsub("_input","",rpkm_input_names),
+          gsub("_ip","",rpkm_IP_names))
+
+rpkm_input <- rpkm[,rpkm_input_names]
+rpkm_IP <- rpkm[,rpkm_IP_names]
+M_value <- log2((rpkm_IP+0.1)/(rpkm_input+0.1))
+M_names <- colnames(M_value)
+M_names <- sort(gsub("_ip","",M_names))
+M_names -> colnames(M_value)
+```
+
+# 9. 
+Play with the matrix
+```{r, eval = FALSE}
+library(ggplot2)
+summary(M_value)
+
+## variance
+variance <- apply(M_value, 2, var)
+variance_dataframe <- data.frame(variance)
+variance_dataframe$sample <- rownames(variance_dataframe)
+# variance values among conditions
+var <- ggplot(variance_dataframe, aes(x = sample, y = variance))
+var + geom_point()
+# variance distribution
+vardis <- ggplot(variance_dataframe, aes(variance))
+vardis + geom_histogram(fill = "black", col = "blue")
+
+
+## mean
+mean <- apply(M_value, 2, mean)
+mean_dataframe <- data.frame(mean)
+mean_dataframe$sample <- rownames(mean_dataframe)
+# mean values among conditions
+mean <- ggplot(mean_dataframe, aes(x = sample, y = mean))
+mean + geom_point()
+```
+
+
